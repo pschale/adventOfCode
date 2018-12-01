@@ -1,5 +1,5 @@
 import numpy as np
-
+import time
 # Day 1: the first task is to sum a list of integers
 
 fname = 'input_day1.txt'
@@ -12,14 +12,14 @@ print('Solution to part 1: {}'.format(np.sum(freq_changes)))
 # if we get to the end of the list, the list repeats
 
 # this is a pretty dumb way of doing it
+start = time.time()
 
-f = freq_changes.copy()
+freqs = np.cumsum(freq_changes)
+
 while True:
-    freqs = np.cumsum(f)
     if len(np.unique(freqs)) < len(freqs):
         break
-
-    f = np.append(f, freq_changes)
+    freqs = np.append(freqs, freqs[-1] + freqs)
 
 for i in range(1,len(freqs)):
     if freqs[i] in freqs[:i]:
@@ -28,5 +28,6 @@ for i in range(1,len(freqs)):
         break
 else:
     print('No solution found :(')
+end = time.time()
 
-print('Solution to part 2: frequency {}, found at {}'.format(solution, position))
+print('Solution to part 2: frequency {}, found at {}, in {} seconds'.format(solution, position, end-start))
